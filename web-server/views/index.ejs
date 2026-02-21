@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">🛡️ SASK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Auditoría</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Docs</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4 mb-4"><%= message %></h1>
+                <p class="lead text-muted">La plataforma integral de ciberseguridad para Fintechs.</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+                    <button id="btn-scan" class="btn btn-primary btn-lg px-4 gap-3">Iniciar Escaneo</button>
+                    <button class="btn btn-outline-secondary btn-lg px-4">Ver Reportes</button>
+                </div>
+                
+                <!-- Resultados del Escaneo -->
+                <div id="scan-results" class="mt-5 text-start d-none">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">¡Escaneo Completado!</h4>
+                        <hr>
+                        <pre id="results-content" class="mb-0" style="white-space: pre-wrap;"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="h1 mb-3">🔍</div>
+                        <h5 class="card-title">Auditoría Técnica</h5>
+                        <p class="card-text">Escaneo de vulnerabilidades con OWASP ZAP y análisis de código estático.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="h1 mb-3">🤖</div>
+                        <h5 class="card-title">Asistente IA</h5>
+                        <p class="card-text">Interpretación inteligente de resultados y sugerencias de remediación.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="h1 mb-3">📋</div>
+                        <h5 class="card-title">Compliance</h5>
+                        <p class="card-text">Checklists alineados con BCRA, ISO 27001 y GDPR.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/client.js"></script>
+</body>
+</html>
