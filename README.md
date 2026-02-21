@@ -123,26 +123,53 @@ El kit ha sido diseñado para satisfacer los requisitos de:
 
 ---
 
-## 🚀 Guía de Inicio Rápido
+## 🚀 Guía de Inicio Rápido (Prototipo Dual-Core)
+
+Este prototipo requiere levantar dos servicios simultáneamente: el Servidor Web (Node.js) y el Motor de Seguridad (Python).
 
 ### Requisitos Previos
-*   Python 3.10 o superior.
-*   Git.
+*   **Node.js:** v18.0.0 o superior.
+*   **Python:** v3.10 o superior.
+*   **Git:** Para control de versiones.
 
-### Instalación
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/equipo-57/sask.git
-   cd sask
-   ```
-2. Instalar dependencias:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Ejecutar el portal local:
-   ```bash
-   python app.py
-   ```
+### Instalación y Ejecución
+
+#### 1. Preparar el Motor de Seguridad (Python)
+Este servicio se encarga de ejecutar los escaneos y scripts de auditoría.
+
+```bash
+cd security-engine
+# (Opcional) Crear entorno virtual
+python -m venv venv
+# Windows: venv\Scripts\activate | Mac/Linux: source venv/bin/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Iniciar el motor
+python main.py
+```
+> El motor quedará corriendo en `http://localhost:8000`
+
+#### 2. Iniciar el Servidor Web (Node.js)
+En una **nueva terminal**, levanta la interfaz de usuario.
+
+```bash
+cd web-server
+
+# Instalar dependencias
+npm install
+
+# Iniciar el servidor
+npm start
+```
+> La interfaz estará disponible en `http://localhost:3000`
+
+### Uso del Prototipo
+1.  Abre tu navegador en `http://localhost:3000`.
+2.  Verás el Dashboard principal.
+3.  Haz clic en **"Iniciar Escaneo"**.
+4.  El sistema conectará el frontend -> Node.js -> Python Engine y devolverá un reporte simulado procesado por el módulo de IA.
 
 ---
 
