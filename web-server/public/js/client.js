@@ -242,9 +242,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text, context: { findings: lastFindings, url: targetInput.value } })
+                body: JSON.stringify({ message: text, context: { findings: lastFindings, url: targetInput.value, currentSection: document.querySelector(".section.active").id } })
             });
             const data = await res.json();
+            
+            // Handle [[GOTO:section]] command
+            const gotoMatch = data.reply.match(/\[\[GOTO:(\w+)\]\]/);
+            if (gotoMatch) {
+                const sectionId = gotoMatch[1].toLowerCase();
+                const navItem = document.querySelector(`[data-section="${sectionId}"]`);
+                if (navItem) {
+                    navItem.click();
+                }
+                // Clean the command from the displayed text
+                data.reply = data.reply.replace(/\[\[GOTO:\w+\]\]/g, "").trim();
+            }
+
             addChatMessage("bot", data.reply);
         } catch (e) { addChatMessage("bot", "SYSTEM_ERROR: AI CORE DISCONNECTED"); }
     }

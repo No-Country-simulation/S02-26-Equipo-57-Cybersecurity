@@ -83,11 +83,24 @@
                         <div class="stat-value status-active" style="font-size: 1.5rem; line-height: 1.2;">O.D.I.N. AI ONLINE</div>
                     </div>
                     <div class="stat-box">
-                        <div class="stat-label" data-i18n="stat_scans">SCANS PERFORMED</div>
-                        <div class="stat-value" id="dash-scans-count">0</div>
+                        <div class="stat-label">COMPLIANCE SCORE</div>
+                        <div class="stat-value" id="compliance-score">0%</div>
+                        <div style="height: 4px; background: #eee; margin-top: 10px; width: 100%;"><div id="compliance-bar" style="height: 100%; width: 0%; background: var(--accent-color); transition: width 0.5s;"></div></div>
                     </div>
                 </div>
-                <div class="card-sharp" style="margin-top: 3rem;">
+
+                <!-- Compliance Checklist Widget -->
+                <div class="card-sharp" style="margin-top: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h3 style="margin:0;">SECURITY HARDENING CHECKLIST</h3>
+                        <small style="color: var(--text-dim);">FINTECH BASELINE</small>
+                    </div>
+                    <div id="checklist-container" class="checklist-grid">
+                        <!-- Items injected by JS -->
+                    </div>
+                </div>
+
+                <div class="card-sharp" style="margin-top: 2rem;">
                     <h3 style="margin-top:0;">QUICK START AUDIT</h3>
                     <div class="audit-input-group" style="margin-top: 1rem;">
                         <input type="url" id="target-url-dash" placeholder="https://target-app.com" style="flex:1; border: 1px solid var(--border-color); padding: 1rem; background: var(--bg-main); color: var(--text-main);">
@@ -99,6 +112,21 @@
             <!-- Security Audit Section -->
             <section id="audit" class="section">
                 <h2 data-i18n="audit_title" style="margin-bottom: 1.5rem;">SECURITY AUDIT CONSOLE</h2>
+                
+                <!-- CI/CD Simulation Panel -->
+                <div class="card-sharp" style="border-left: 4px solid var(--accent-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h3 style="margin:0;">CI/CD PIPELINE SIMULATOR</h3>
+                            <p style="font-size: 0.8rem; margin: 5px 0 0 0; color: var(--text-dim);">Validate build integrity before deployment.</p>
+                        </div>
+                        <button id="btn-cicd" class="btn-sharp small"><i class="fas fa-play"></i> RUN PIPELINE</button>
+                    </div>
+                    <div id="cicd-viz" class="d-none" style="margin-top: 1.5rem; display: flex; gap: 10px; align-items: center; overflow-x: auto;">
+                        <!-- Steps injected by JS -->
+                    </div>
+                </div>
+
                 <div class="audit-input-group" style="margin-bottom: 2rem;">
                     <input type="url" id="target-url" placeholder="https://target-application.com">
                     <button id="btn-scan" class="btn-sharp" data-i18n="btn_scan">RUN SCAN</button>
