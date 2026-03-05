@@ -13,8 +13,8 @@ app.set('views', path.join(__dirname, '../views'));
 
 // Middleware para archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/docs-static', express.static(path.join(__dirname, '../../docs')));
-app.use('/notes-static', express.static(path.join(__dirname, '../../teamNotes')));
+app.use('/docs-static', express.static(path.join(__dirname, '../public/docs-content')));
+app.use('/notes-static', express.static(path.join(__dirname, '../public/notes-content')));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
