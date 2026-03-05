@@ -1,0 +1,8 @@
+O: Operational (Operacional)
+
+D: Defense
+
+I: Intelligent
+
+N: Network
+

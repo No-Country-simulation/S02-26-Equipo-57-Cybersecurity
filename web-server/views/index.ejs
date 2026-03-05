@@ -3,80 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>O.D.I.N. | Operational Defense Intelligent Network</title>
+    <link rel="stylesheet" href="/css/odin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Fira+Code&display=swap" rel="stylesheet">
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="#">🛡️ SASK</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Auditoría</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Docs</a></li>
-                </ul>
-            </div>
+<body data-theme="light">
+    
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="/assets/diseno-logotipo-raven-fondo-blanco_121452-278.avif" alt="Logo" style="height: 30px;" id="mobile-logo">
+            <h2 style="margin:0; letter-spacing: 2px; font-weight: 900; font-size: 1.2rem;">O.D.I.N.</h2>
         </div>
-    </nav>
-
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8 text-center">
-                <h1 class="display-4 mb-4"><%= message %></h1>
-                <p class="lead text-muted">La plataforma integral de ciberseguridad para Fintechs.</p>
-                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
-                    <button id="btn-scan" class="btn btn-primary btn-lg px-4 gap-3">Iniciar Escaneo</button>
-                    <button class="btn btn-outline-secondary btn-lg px-4">Ver Reportes</button>
-                </div>
-                
-                <!-- Resultados del Escaneo -->
-                <div id="scan-results" class="mt-5 text-start d-none">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">¡Escaneo Completado!</h4>
-                        <hr>
-                        <pre id="results-content" class="mb-0" style="white-space: pre-wrap;"></pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-5">
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="h1 mb-3">🔍</div>
-                        <h5 class="card-title">Auditoría Técnica</h5>
-                        <p class="card-text">Escaneo de vulnerabilidades con OWASP ZAP y análisis de código estático.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="h1 mb-3">🤖</div>
-                        <h5 class="card-title">Asistente IA</h5>
-                        <p class="card-text">Interpretación inteligente de resultados y sugerencias de remediación.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body text-center">
-                        <div class="h1 mb-3">📋</div>
-                        <h5 class="card-title">Compliance</h5>
-                        <p class="card-text">Checklists alineados con BCRA, ISO 27001 y GDPR.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <button class="mobile-menu-btn" id="menu-toggle"><i class="fas fa-bars"></i></button>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Mobile Overlay -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-close-btn" id="menu-close"><i class="fas fa-times"></i></button>
+            
+            <div class="sidebar-header">
+                <!-- Dynamic Logo Switcher -->
+                <div class="logo-container" id="theme-toggle">
+                    <img src="/assets/diseno-logotipo-raven-fondo-blanco_121452-278.avif" alt="O.D.I.N. Logo" class="app-logo" id="app-logo">
+                </div>
+                <!-- Branding Text -->
+                <div class="brand-text">
+                    <h1 class="brand-title">O.D.I.N.</h1>
+                    <small class="brand-subtitle">OPERATIONAL DEFENSE<br>INTELLIGENT NETWORK</small>
+                </div>
+            </div>
+            
+            <nav id="main-nav">
+                <a href="#" class="nav-item active" data-section="dashboard" data-i18n="nav_dash">
+                    <i class="fas fa-th-large"></i> <span class="sidebar-text">DASHBOARD</span>
+                </a>
+                <a href="#" class="nav-item" data-section="audit" data-i18n="nav_audit">
+                    <i class="fas fa-terminal"></i> <span class="sidebar-text">SECURITY AUDIT</span>
+                </a>
+                <a href="#" class="nav-item" data-section="docs" data-i18n="nav_docs">
+                    <i class="fas fa-book"></i> <span class="sidebar-text">DOCS & KNOWLEDGE</span>
+                </a>
+                <a href="#" class="nav-item" data-section="reports" data-i18n="nav_history">
+                    <i class="fas fa-history"></i> <span class="sidebar-text">AUDIT LOGS</span>
+                </a>
+            </nav>
+            <div style="margin-top: auto; padding-top: 1rem;">
+                <button id="btn-lang" class="btn-sharp" style="width:100%; font-size: 0.7rem;">ES / EN</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-panel">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="dash-header">
+                    <h2 id="dash-title" data-i18n="dash_title">OPERATIONAL STATUS</h2>
+                    <p style="color: var(--text-dim);">Super App Security Command Center</p>
+                </div>
+                <div class="dash-grid">
+                    <div class="stat-box">
+                        <div class="stat-label" data-i18n="stat_defense">NETWORK DEFENSE</div>
+                        <div class="stat-value status-active" data-i18n="val_active">ACTIVE</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label" data-i18n="stat_ai">INTELLIGENCE CORE</div>
+                        <div class="stat-value status-active" style="font-size: 1.5rem; line-height: 1.2;">O.D.I.N. AI ONLINE</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label" data-i18n="stat_scans">SCANS PERFORMED</div>
+                        <div class="stat-value" id="dash-scans-count">0</div>
+                    </div>
+                </div>
+                <div class="card-sharp" style="margin-top: 3rem;">
+                    <h3 style="margin-top:0;">QUICK START AUDIT</h3>
+                    <div class="audit-input-group" style="margin-top: 1rem;">
+                        <input type="url" id="target-url-dash" placeholder="https://target-app.com" style="flex:1; border: 1px solid var(--border-color); padding: 1rem; background: var(--bg-main); color: var(--text-main);">
+                        <button onclick="quickScan()" class="btn-sharp">FAST AUDIT</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Audit Section -->
+            <section id="audit" class="section">
+                <h2 data-i18n="audit_title" style="margin-bottom: 1.5rem;">SECURITY AUDIT CONSOLE</h2>
+                <div class="audit-input-group" style="margin-bottom: 2rem;">
+                    <input type="url" id="target-url" placeholder="https://target-application.com">
+                    <button id="btn-scan" class="btn-sharp" data-i18n="btn_scan">RUN SCAN</button>
+                </div>
+                <div id="terminal-wrapper" class="d-none">
+                    <div class="terminal-header" style="background: var(--chat-header-bg); color: var(--chat-header-text); padding: 0.5rem; display: flex; justify-content: space-between;">
+                        <small>AUDIT_PROCESS_LOG</small>
+                        <span style="color: #0f0; font-size: 0.8rem;">● LIVE</span>
+                    </div>
+                    <div id="audit-terminal" style="background: #000; color: #fff; padding: 1rem; height: 300px; overflow-y: auto; font-family: 'Fira Code';"></div>
+                </div>
+                <div id="audit-results" class="d-none" style="margin-top: 2rem;">
+                    <div class="results-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                        <h3 data-i18n="report_title" style="margin:0;">VULNERABILITY REPORT</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button id="btn-download-log" class="btn-sharp" style="font-size: 0.7rem; padding: 0.5rem 1rem;">LOG</button>
+                            <button id="btn-download-pdf" class="btn-sharp" style="font-size: 0.7rem; padding: 0.5rem 1rem;">PDF</button>
+                        </div>
+                    </div>
+                    <div id="results-list"></div>
+                </div>
+            </section>
+
+            <!-- Docs Section -->
+            <section id="docs" class="section">
+                <div class="doc-container">
+                    <div class="doc-list" id="doc-tree"></div>
+                    <div class="doc-view markdown-body" id="doc-display">
+                        <div class="empty-state">
+                            <i class="fas fa-book-open fa-3x" style="opacity: 0.1;"></i>
+                            <p data-i18n="doc_empty" style="margin-top: 1rem; color: var(--text-dim);">Select a document.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section id="reports" class="section">
+                <h2 data-i18n="history_title" style="margin-bottom: 1.5rem;">AUDIT HISTORY</h2>
+                <div id="history-list"></div>
+            </section>
+        </main>
+
+        <!-- New Docked Chatbot -->
+        <div class="chat-dock minimized" id="chat-dock">
+            <!-- Spine (Minimizado) -->
+            <div class="chat-spine" onclick="toggleChat()">
+                <span>O.D.I.N. AI ASSISTANT</span>
+                <i class="fas fa-chevron-left" style="margin-top: 1rem;"></i>
+            </div>
+            
+            <!-- Content (Maximizado) -->
+            <div class="chat-content">
+                <div class="chat-header-bar">
+                    <span style="font-weight: 900; letter-spacing: 1px;">O.D.I.N. AI</span>
+                    <div class="chat-controls">
+                        <i class="fas fa-expand" onclick="expandChat()" title="Pantalla Completa"></i>
+                        <i class="fas fa-minus" onclick="toggleChat()" title="Minimizar"></i>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chat-body">
+                    <div class="msg msg-bot">Sistema en línea. ¿En qué puedo ayudarte?</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="...">
+                    <button id="btn-chat-send" class="btn-sharp" style="padding: 0 1rem;"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="/js/client.js"></script>
+    <script>
+        // Theme Logic
+        const themeToggle = document.getElementById('theme-toggle');
+        const logo = document.getElementById('app-logo');
+        const body = document.body;
+        const savedTheme = localStorage.getItem('odin_theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        updateLogo(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const current = body.getAttribute('data-theme');
+            const newTheme = current === 'light' ? 'dark' : 'light';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('odin_theme', newTheme);
+            updateLogo(newTheme);
+        });
+
+        function updateLogo(theme) {
+            logo.src = theme === 'dark' ? '/assets/istockphoto-1130529928-612x612.jpg' : '/assets/diseno-logotipo-raven-fondo-blanco_121452-278.avif';
+        }
+
+        // Chat Logic
+        const chatDock = document.getElementById('chat-dock');
+        function toggleChat() {
+            chatDock.classList.toggle('minimized');
+            chatDock.classList.toggle('expanded');
+        }
+        function expandChat() {
+            chatDock.style.width = chatDock.style.width === '100vw' ? '' : '100vw';
+        }
+
+        // Quick Scan
+        function quickScan() {
+            const url = document.getElementById('target-url-dash').value;
+            if(url) {
+                document.getElementById('target-url').value = url;
+                document.querySelector('[data-section="audit"]').click();
+                document.getElementById('btn-scan').click();
+            }
+        }
+        
+        // --- MOBILE MENU LOGIC FIXED ---
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuClose = document.getElementById('menu-close');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('menu-overlay');
+
+        function openMenu() {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+        }
+
+        function closeMenu() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+
+        menuToggle.addEventListener('click', openMenu);
+        menuClose.addEventListener('click', closeMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-item').forEach(link => {
+            link.addEventListener('click', () => {
+                if(window.innerWidth <= 1024) closeMenu();
+            });
+        });
+    </script>
 </body>
 </html>

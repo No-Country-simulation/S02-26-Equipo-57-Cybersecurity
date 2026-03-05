@@ -13,14 +13,17 @@ app.set('views', path.join(__dirname, '../views'));
 
 // Middleware para archivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
+app.use('/docs-static', express.static(path.join(__dirname, '../../docs')));
+app.use('/notes-static', express.static(path.join(__dirname, '../../teamNotes')));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas básicas
 app.get('/', (req, res) => {
     res.render('index', { 
-        title: 'SASK - Super App Security Kit',
-        message: 'Bienvenido al Portal de Seguridad SASK' 
+        title: 'ODIN - Operational Defense Intelligent Network',
+        message: 'ODIN Core Security Command' 
     });
 });
 
@@ -29,5 +32,5 @@ const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
 app.listen(port, () => {
-    console.log(`Servidor SASK corriendo en http://localhost:${port}`);
+    console.log(`ODIN Security Hub running at http://localhost:${port}`);
 });
