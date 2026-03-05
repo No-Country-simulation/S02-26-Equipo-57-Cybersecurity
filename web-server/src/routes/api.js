@@ -22,14 +22,17 @@ router.get('/docs', async (req, res) => {
             try {
                 const files = await fs.readdir(dir);
                 return files
-                    .filter(f => f !== 'rebranding.txt') // Ocultar rebranding.txt
+                    .filter(f => !f.startsWith('.') && f !== 'rebranding.txt')
                     .map(f => ({
                         name: f,
                         path: f,
                         category: category,
                         type: path.extname(f).toLowerCase()
                     }));
-            } catch (e) { return []; }
+            } catch (e) { 
+                console.error(`Error leyendo directorio ${dir}:`, e.message);
+                return []; 
+            }
         };
 
         const [docsFiles, notesFiles] = await Promise.all([

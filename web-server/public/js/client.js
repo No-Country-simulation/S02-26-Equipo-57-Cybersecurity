@@ -275,16 +275,143 @@ document.addEventListener('DOMContentLoaded', () => {
     function downloadFile(c, f) { const b = new Blob([c], { type: 'text/plain' }); const l = document.createElement('a'); l.href = URL.createObjectURL(b); l.download = f; l.click(); }
     function incrementScanCount() { 
         const h = JSON.parse(localStorage.getItem('odin_h') || '[]');
-        document.getElementById('dash-scans-count').textContent = h.length; 
+        const countEl = document.getElementById('dash-scans-count');
+        if (countEl) countEl.textContent = h.length; 
     }
 
-    updateUI(); loadDocsList(); loadHistory(); incrementScanCount();
+    // 1. Interactive Checklist Logic
+    const checklistContainer = document.getElementById('checklist-container');
+    const complianceScoreEl = document.getElementById('compliance-score');
+    const complianceBar = document.getElementById('compliance-bar');
 
-    document.querySelectorAll('.nav-item').forEach(i => i.onclick = (e) => {
-        e.preventDefault(); document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-        i.classList.add('active'); document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-        document.getElementById(i.getAttribute('data-section')).classList.add('active');
+    const checklistItems = [
+        { id: 'c1', text: 'MFA Enforcement (Auth0/Firebase)', cat: 'Identity' },
+        { id: 'c2', text: 'TLS 1.3 + HSTS Enabled', cat: 'Network' },
+        { id: 'c3', text: 'Secrets in Vault (No hardcoded)', cat: 'Secrets' },
+        { id: 'c4', text: 'PCI DSS Compliance Audit', cat: 'Compliance' },
+        { id: 'c5', text: 'Daily Vulnerability Scanning', cat: 'Ops' },
+        { id: 'c6', text: 'DDoS Protection (Cloudflare/AWS)', cat: 'Infra' }
+    ];
+
+    function initChecklist() {
+        if (!checklistContainer) return;
+        const saved = JSON.parse(localStorage.getItem('odin_checklist') || '{}');
+        
+        checklistContainer.innerHTML = '';
+        checklistItems.forEach(item => {
+            const isChecked = saved[item.id] ? 'checked' : '';
+            const div = document.createElement('div');
+            div.className = 'checklist-item-wrapper';
+            div.style.display = 'flex';
+            div.style.alignItems = 'center';
+            div.style.gap = '10px';
+            div.style.padding = '0.5rem';
+            div.style.borderBottom = '1px solid #eee';
+            div.innerHTML = `
+                <input type="checkbox" id="${item.id}" ${isChecked} style="width: 18px; height: 18px; cursor: pointer;">
+                <label for="${item.id}" style="cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+                    <span style="color: var(--odin-accent); font-size: 0.6rem; display: block;">${item.cat}</span>
+                    ${item.text}
+                </label>
+            `;
+            const checkbox = div.querySelector('input');
+            checkbox.onchange = () => {
+                saved[item.id] = checkbox.checked;
+                localStorage.setItem('odin_checklist', JSON.stringify(saved));
+                updateCompliance();
+            };
+            checklistContainer.appendChild(div);
+        });
+        updateCompliance();
+    }
+
+    function updateCompliance() {
+        const saved = JSON.parse(localStorage.getItem('odin_checklist') || '{}');
+        const checkedCount = Object.values(saved).filter(Boolean).length;
+        const score = Math.round((checkedCount / checklistItems.length) * 100);
+        
+        if (complianceScoreEl) complianceScoreEl.textContent = `${score}%`;
+        if (complianceBar) complianceBar.style.width = `${score}%`;
+    }
+
+    // 2. CI/CD Pipeline Simulator
+    const btnCicd = document.getElementById('btn-cicd');
+    const cicdViz = document.getElementById('cicd-viz');
+
+    if (btnCicd) {
+        btnCicd.onclick = async () => {
+            btnCicd.disabled = true;
+            cicdViz.classList.remove('d-none');
+            cicdViz.innerHTML = '';
+            
+            const steps = [
+                { n: 'GIT PUSH', icon: 'fa-code-branch' },
+                { n: 'SECRET SCAN', icon: 'fa-shield-alt' },
+                { n: 'DEP CHECK', icon: 'fa-box-open' },
+                { n: 'SAST SCAN', icon: 'fa-search' },
+                { n: 'ODIN AUDIT', icon: 'fa-microchip' },
+                { n: 'DEPLOY', icon: 'fa-rocket' }
+            ];
+
+            for (const step of steps) {
+                const el = document.createElement('div');
+                el.style.textAlign = 'center';
+                el.style.minWidth = '100px';
+                el.innerHTML = `
+                    <div class="pipeline-node" style="width: 40px; height: 40px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px;">
+                        <i class="fas ${step.icon}"></i>
+                    </div>
+                    <small style="font-size: 0.6rem; font-weight: 900;">${step.n}</small>
+                `;
+                cicdViz.appendChild(el);
+                
+                const node = el.querySelector('.pipeline-node');
+                node.style.background = 'var(--odin-accent)';
+                node.style.color = '#fff';
+                node.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+                
+                await sleep(1000);
+                
+                node.style.background = '#22c55e';
+                node.innerHTML = '<i class="fas fa-check"></i>';
+                
+                if (step !== steps[steps.length - 1]) {
+                    const line = document.createElement('div');
+                    line.style.height = '2px'; line.style.width = '30px'; line.style.background = '#22c55e';
+                    cicdViz.appendChild(line);
+                }
+            }
+            btnCicd.disabled = false;
+        };
+    }
+
+    updateUI(); 
+    loadDocsList(); 
+    loadHistory(); 
+    incrementScanCount();
+    initChecklist();
+
+    // Navigation logic (Ensure it runs even if other parts fail)
+    document.querySelectorAll('.nav-item').forEach(i => {
+        i.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = i.getAttribute('data-section');
+            const section = document.getElementById(sectionId);
+            
+            if (section) {
+                document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+                i.classList.add('active');
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                section.classList.add('active');
+            }
+        });
     });
 
-    document.getElementById('chat-header').onclick = () => document.getElementById('chat-widget').classList.toggle('open');
+    const chatHeader = document.getElementById('chat-header');
+    if (chatHeader) {
+        chatHeader.onclick = () => {
+            const widget = document.getElementById('chat-widget') || document.getElementById('chat-dock');
+            if (widget) widget.classList.toggle('open');
+        };
+    }
 });
