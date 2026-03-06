@@ -238,11 +238,29 @@ document.addEventListener('DOMContentLoaded', () => {
         addChatMessage("user", text);
         chatInput.value = '';
 
+        // Get current context
+        const context = { 
+            findings: lastFindings, 
+            url: targetInput.value, 
+            currentSection: document.querySelector(".section.active").id 
+        };
+
+        // If in docs, add document content
+        if (context.currentSection === 'docs') {
+            const activeDoc = document.querySelector('.doc-item.active span');
+            if (activeDoc) {
+                context.currentDocTitle = activeDoc.textContent;
+                // Add snippet of content if available
+                const docContent = document.getElementById('doc-display').innerText;
+                context.currentDocContent = docContent.substring(0, 500) + '...'; 
+            }
+        }
+
         try {
             const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text, context: { findings: lastFindings, url: targetInput.value, currentSection: document.querySelector(".section.active").id } })
+                body: JSON.stringify({ message: text, context: context })
             });
             const data = await res.json();
             
@@ -253,6 +271,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const navItem = document.querySelector(`[data-section="${sectionId}"]`);
                 if (navItem) {
                     navItem.click();
+                    // If it's a doc recommendation, we might need logic to open specific docs, 
+                    // but for now, navigating to the section is a good start.
                 }
                 // Clean the command from the displayed text
                 data.reply = data.reply.replace(/\[\[GOTO:\w+\]\]/g, "").trim();

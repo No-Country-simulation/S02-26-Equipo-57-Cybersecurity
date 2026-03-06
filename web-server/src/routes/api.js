@@ -12,11 +12,11 @@ const path = require('path');
 
 // --- Endpoints de Documentación ODIN ---
 
-// GET /api/docs - Lista todos los archivos en public/docs-content y public/notes-content
+// GET /api/docs - Lista todos los archivos en root/docs y root/teamNotes
 router.get('/docs', async (req, res) => {
     try {
-        const docsPath = path.join(__dirname, '../../public/docs-content');
-        const notesPath = path.join(__dirname, '../../public/notes-content');
+        const docsPath = path.join(__dirname, '../../../docs');
+        const notesPath = path.join(__dirname, '../../../teamNotes');
         
         const getFiles = async (dir, category) => {
             try {
@@ -53,8 +53,8 @@ router.get('/docs/content', async (req, res) => {
 
     try {
         let basePath = category === 'Arquitectura' 
-            ? path.join(__dirname, '../../public/docs-content') 
-            : path.join(__dirname, '../../public/notes-content');
+            ? path.join(__dirname, '../../../docs') 
+            : path.join(__dirname, '../../../teamNotes');
         
         const filePath = path.join(basePath, file);
         const content = await fs.readFile(filePath, 'utf8');
